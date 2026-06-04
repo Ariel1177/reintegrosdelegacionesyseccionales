@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSCHOCA - Solicitud de Reintegros</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f4f7f5;
+        }
+        /* Verde institucional de Camioneros y variaciones */
+        .bg-camioneros-primary { background-color: #007A33; }
+        .bg-camioneros-dark { background-color: #005c25; }
+        .text-camioneros-primary { color: #007A33; }
+        .border-camioneros-primary { border-color: #007A33; }
+        .focus-ring-camioneros:focus {
+            outline: none;
+            border-color: #007A33;
+            box-shadow: 0 0 0 3px rgba(0, 122, 51, 0.15);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col justify-between">
+
+    <div class="relative overflow-hidden w-full min-h-screen flex flex-col justify-between">
+        <!-- Decoraciones de fondo -->
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-emerald-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse -z-10"></div>
+        <div class="absolute bottom-10 right-1/4 w-96 h-96 bg-green-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse -z-10"></div>
+
+        <!-- Encabezado Institucional -->
+        <header class="bg-camioneros-primary text-white shadow-lg">
+            <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white p-2 rounded-lg shadow">
+                        <svg class="w-8 h-8 text-emerald-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 10.5V20a2 2 0 01-2 2H7a2 2 0 01-2-2v-9.5m14 0V9a2 2 0 00-2-2h-3m-6 3.5V9a2 2 0 012-2h3m-6 3.5H5a2 2 0 01-2-2V9a2 2 0 012-2h3m0 0V4a2 2 0 012-2h4a2 2 0 012 2v3m-6 3.5H5"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-extrabold tracking-tight">OSCHOCA</h1>
+                        <p class="text-[11px] uppercase tracking-widest text-emerald-100 font-semibold">Obra Social de Choferes de Camiones</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="bg-emerald-900/40 text-emerald-200 text-xs px-3 py-1.5 rounded-full font-medium border border-emerald-600">
+                        Carga de Delegaciones
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-4xl w-full mx-auto px-4 py-8 flex-grow">
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                <!-- Banner de Título de Formulario -->
+                <div class="bg-gradient-to-r from-emerald-800 to-emerald-950 p-6 sm:p-8 text-white flex justify-between items-center flex-wrap gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold">Solicitud de Reintegro Médico</h2>
+                        <p class="text-xs text-emerald-200">Gestione y procese los comprobantes de prestaciones de afiliados.</p>
+                    </div>
+                    <div id="badge-afiliado-status" class="bg-emerald-800 text-emerald-100 text-xs px-3 py-1.5 rounded-full font-medium border border-emerald-500/30 flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Ingreso Manual
+                    </div>
+                </div>
+
+                <!-- Formulario Principal -->
+                <form id="reintegroForm" class="p-6 sm:p-8 space-y-6">
+
+                    <!-- Fila 1: Nº de Afiliado y Selección de Delegación -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label for="afiliado" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                                Número de Afiliado *
+                            </label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 font-mono text-sm pointer-events-none">
+                                    Nº
+                                </span>
+                                <input type="text" id="afiliado" name="afiliado" placeholder="Ej: 123456/01" inputmode="numeric" 
+                                    class="w-full bg-white border border-gray-300 rounded-lg pl-9 pr-3 py-2.5 text-base font-semibold tracking-wider text-gray-800 focus-ring-camioneros transition" required>
+                            </div>
+                            <span class="text-[10px] text-gray-400 mt-1 block">El guion y los 2 últimos dígitos se ordenan automáticamente</span>
+                        </div>
+
+                        <div>
+                            <label for="delegacion" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                                Delegación *
+                            </label>
+                            <select id="delegacion" name="delegacion" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-base text-gray-800 focus-ring-camioneros transition" required>
+                                <option value="" disabled selected>Seleccione la delegación</option>
+                                <option value="San Justo">San Justo</option>
+                                <option value="Lanús">Lanús</option>
+                                <option value="Monte Grande">Monte Grande</option>
+                                <option value="Zona Norte">Zona Norte</option>
+                                <option value="Ezeiza">Ezeiza</option>
+                                <option value="Luján">Luján</option>
+                                <option value="La Plata">La Plata</option>
+                                <option value="Pilar">Pilar</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Fila 2: Nombre Completo -->
+                    <div>
+                        <label for="nombre" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                            Nombre y Apellido *
+                        </label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Ingrese nombre completo del afiliado" 
+                            class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-base text-gray-800 focus-ring-camioneros transition" required>
+                    </div>
+
+                    <!-- Sección de CBU y datos de contacto condicionales -->
+                    <div class="bg-emerald-50/30 p-5 rounded-xl border border-emerald-100/60 space-y-4">
+                        <div>
+                            <div class="flex justify-between items-center mb-1.5">
+                                <label for="cbu" class="block text-xs font-bold uppercase tracking-wider text-emerald-950">
+                                    CBU del Afiliado (Opcional)
+                                </label>
+                                <span id="cbu-counter" class="text-xs font-mono font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded">
+                                    0 / 22 dígitos
+                                </span>
+                            </div>
+                            <input type="text" id="cbu" name="cbu" placeholder="Ingrese los 22 dígitos de la cuenta para transferencia" maxlength="22" inputmode="numeric"
+                                class="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-base tracking-widest font-mono text-emerald-950 focus-ring-camioneros transition">
+                            <p class="text-[11px] text-emerald-800 mt-1 font-medium">Si completa el CBU, los campos de teléfono y correo electrónico serán obligatorios para la delegación.</p>
+                        </div>
+
+                        <!-- Fila 3: Teléfono y Email (Obligatorios Condicionales según CBU) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                            <div>
+                                <label id="telefono-label" for="telefono" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                                    Número de Teléfono
+                                </label>
+                                <input type="tel" id="telefono" name="telefono" placeholder="Ej: 1123456789" 
+                                    class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-base text-gray-800 focus-ring-camioneros transition">
+                            </div>
+
+                            <div>
+                                <label id="email-label" for="email" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                                    Email de Contacto
+                                </label>
+                                <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" 
+                                    class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-base text-gray-800 focus-ring-camioneros transition">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECCIÓN DINÁMICA DE COMPROBANTES / FACTURAS -->
+                    <div class="border-t border-gray-100 pt-6 space-y-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-700 flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Detalle de Facturas / Comprobantes
+                            </h3>
+                            <span class="text-xs font-semibold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full" id="facturas-count">1 Factura</span>
+                        </div>
+                        
+                        <div id="facturas-container" class="space-y-4">
+                            <!-- Las filas de facturas se generarán aquí dinámicamente -->
+                        </div>
+
+                        <!-- Botón Agregar Factura y Panel de Totales -->
+                        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mt-3 p-4 bg-gray-50 rounded-xl border border-gray-200/60">
+                            <button type="button" id="btn-add-factura" class="flex items-center gap-2 text-emerald-700 hover:text-emerald-900 font-bold text-sm transition-colors py-2 px-4 rounded-lg hover:bg-emerald-50 border border-dashed border-emerald-300 active:scale-95">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                                Agregar Comprobante / Factura
+                            </button>
+                            <div class="text-center sm:text-right">
+                                <span class="text-[10px] text-gray-500 font-bold uppercase block tracking-wider">Total Facturado Acumulado</span>
+                                <span class="text-xl font-extrabold text-emerald-950" id="total-acumulado-display">$ 0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="montoReintegrar" name="montoReintegrar" value="">
+                    <input type="hidden" id="estado" name="estado" value="Nuevo reintegro">
+
+                    <!-- Carga de Documentación -->
+                    <div>
+                        <span class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                            Documentación Médica / Comprobante *
+                        </span>
+                        <div class="border-2 border-dashed border-gray-300 hover:border-emerald-500 rounded-xl p-6 transition-all text-center relative bg-gray-50/50 cursor-pointer" id="dropzone">
+                            <input type="file" id="archivo" name="archivos" required accept=".pdf,.jpg,.jpeg,.png" multiple class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <div class="flex flex-col items-center justify-center space-y-2 pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-emerald-600 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
+                                <span class="text-sm font-semibold text-gray-700">Seleccionar o arrastrar archivos digitales</span>
+                                <span class="text-xs text-gray-400">Archivos PDF, JPG o PNG de hasta 5MB por unidad.</span>
+                            </div>
+                        </div>
+                        <div id="fileName" class="mt-3 p-3 rounded-lg text-sm hidden border"></div>
+                    </div>
+
+                    <!-- Botón de Envío -->
+                    <button type="submit" id="submitBtn" class="w-full bg-camioneros-primary text-white py-4 rounded-xl font-bold hover:bg-camioneros-dark active:scale-[0.99] shadow-lg shadow-emerald-700/20 transition-all flex items-center justify-center space-x-3 text-lg">
+                        <span id="btn-text">Enviar Solicitud a Delegación</span>
+                        <div class="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent hidden" id="loader"></div>
+                    </button>
+                </form>
+
+                <!-- Pantalla de Éxito -->
+                <div id="successMessage" class="hidden p-8 text-center space-y-6">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-2xl font-bold text-gray-900">¡Trámite de Reintegro Ingresado!</h3>
+                        <p class="text-gray-500 max-w-md mx-auto">La solicitud fue procesada y guardada en el sistema de la Delegación seleccionada de OSCHOCA.</p>
+                    </div>
+                    <button type="button" class="bg-camioneros-primary hover:bg-camioneros-dark text-white px-6 py-3 rounded-lg font-bold transition-all shadow" id="resetBtn">
+                        Iniciar Nueva Carga
+                    </button>
+                </div>
+
+                <!-- Pantalla de Error -->
+                <div id="errorMessage" class="hidden p-8 text-center space-y-6">
+                    <div class="w-16 h-16 bg-red-100 text-red-700 rounded-full flex items-center justify-center mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-2xl font-bold text-red-900">Problemas en la Conexión</h3>
+                        <p class="text-gray-500 max-w-md mx-auto">La red reportó un error al registrar los datos en el servidor de Google Apps Script. Verifique su conexión.</p>
+                    </div>
+                    <button type="button" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-bold transition-all" id="resetErrorBtn">
+                        Intentar Nuevamente
+                    </button>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Pie de página -->
+        <footer class="bg-gray-900 text-gray-500 text-xs py-4 text-center border-t border-gray-800">
+            <div class="max-w-6xl mx-auto px-4">
+                <p>© 2026 Obra Social de Choferes de Camiones (OSCHOCA). Todos los derechos reservados.</p>
+                <p class="mt-1 text-gray-600">Desarrollo Tecnológico Sindicato de Camioneros</p>
+            </div>
+        </footer>
+    </div>
+
+    <script type="module">
+        const URL_WEBAPP_GOOGLE = 'https://script.google.com/macros/s/AKfycbyu2nh6fpoibQfi-zAfMg12o_LRdQNGSCD_tASwFYG8qZZlCPozC4n3gRR9x9EstCxt/exec';
+
+        const especialidadesMedicas = [
+            { nombre: 'Medicina General', descuento: 7000 },
+            { nombre: 'Traumatología', descuento: 10500 },
+            { nombre: 'Cardiología', descuento: 10500 },
+            { nombre: 'Dermatología', descuento: 10500 },
+            { nombre: 'Pediatría', descuento: 10500 },
+            { nombre: 'Odontología', descuento: 180 },
+            { nombre: 'Neurología', descuento: 10500 },
+            { nombre: 'Oftalmología', descuento: 210 },
+            { nombre: 'Ginecología', descuento: 10500 },
+            { nombre: 'Psiquiatría', descuento: 10500 }
+        ];
+
+        const descuentoPorEspecialidad = especialidadesMedicas.reduce((map, item) => {
+            map[item.nombre] = item.descuento;
+            return map;
+        }, {});
+
+        // Selectores de Elementos del DOM
+        const afiliadoInput = document.getElementById('afiliado');
+        const delegacionSelect = document.getElementById('delegacion');
+        const emailInput = document.getElementById('email');
+        const nombreInput = document.getElementById('nombre');
+        const telefonoInput = document.getElementById('telefono');
+        const cbuInput = document.getElementById('cbu');
+        const cbuCounter = document.getElementById('cbu-counter');
+        const toast = document.getElementById('toast');
+        const facturasContainer = document.getElementById('facturas-container');
+        const btnAddFactura = document.getElementById('btn-add-factura');
+        const totalAcumuladoDisplay = document.getElementById('total-acumulado-display');
+        const facturasCountBadge = document.getElementById('facturas-count');
+        const montoReintegrarInput = document.getElementById('montoReintegrar');
+
+        let facturaIdCounter = 0;
+
+        // Generación dinámica de fila de factura
+        function crearFilaFactura() {
+            facturaIdCounter++;
+            const id = facturaIdCounter;
+
+            const row = document.createElement('div');
+            row.className = "factura-row bg-gray-50/70 border border-gray-200 rounded-xl p-4 shadow-sm relative space-y-3 md:space-y-0 md:grid md:grid-cols-12 md:gap-4 md:items-end transition-all hover:border-emerald-200/70 hover:shadow-md";
+            row.id = `factura-row-${id}`;
+
+            row.innerHTML = `
+                <!-- Especialidad -->
+                <div class="md:col-span-5">
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-1">Especialidad Médica *</label>
+                    <select name="especialidad_${id}" class="especialidad-select w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-800 focus-ring-camioneros transition" required>
+                        <option value="" disabled selected>Seleccione especialidad</option>
+                        <option value="Medicina General">Medicina General</option>
+                        <option value="Traumatología">Traumatología</option>
+                        <option value="Cardiología">Cardiología</option>
+                        <option value="Dermatología">Dermatología</option>
+                        <option value="Pediatría">Pediatría</option>
+                        <option value="Odontología">Odontología</option>
+                        <option value="Neurología">Neurología</option>
+                        <option value="Oftalmología">Oftalmología</option>
+                        <option value="Ginecología">Ginecología</option>
+                        <option value="Psiquiatría">Psiquiatría</option>
+                    </select>
+                </div>
+
+                <!-- Número de Factura -->
+                <div class="md:col-span-4">
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-1">Factura Número *</label>
+                    <input type="text" name="factura_${id}" placeholder="0001-00001234" class="factura-input w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-800 focus-ring-camioneros transition" required>
+                </div>
+
+                <!-- Monto -->
+                <div class="md:col-span-2">
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-1">Monto ($) *</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-2.5 flex items-center text-gray-400 text-xs font-bold">$</span>
+                        <input type="number" name="monto_${id}" placeholder="0.00" step="0.01" inputmode="decimal" class="monto-input w-full bg-white border border-gray-300 rounded-lg pl-6 pr-2 py-2 text-sm font-semibold text-gray-800 focus-ring-camioneros transition" required>
+                    </div>
+                </div>
+
+                <!-- Botón de Remover -->
+                <div class="md:col-span-1 flex justify-end md:justify-center">
+                    <button type="button" class="btn-remove-factura text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 transition-colors" title="Eliminar Factura">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            `;
+
+            // Enlazar eventos de cálculo
+            row.querySelector('.monto-input').addEventListener('input', calcularTotalesYReglas);
+            row.querySelector('.especialidad-select').addEventListener('change', calcularTotalesYReglas);
+
+            // Enlazar evento del botón eliminar
+            row.querySelector('.btn-remove-factura').addEventListener('click', () => {
+                const totalFilas = document.querySelectorAll('.factura-row').length;
+                if (totalFilas > 1) {
+                    row.remove();
+                    calcularTotalesYReglas();
+                    actualizarContadorBadge();
+                } else {
+                    showToast("Debe mantener al menos una factura en la ríndida.", "error");
+                }
+            });
+
+            return row;
+        }
+
+        function actualizarContadorBadge() {
+            const filas = document.querySelectorAll('.factura-row').length;
+            facturasCountBadge.textContent = `${filas} ${filas === 1 ? 'Factura' : 'Facturas'}`;
+        }
+
+        // Cálculo acumulado e impacto en CBU
+        function calcularTotalesYReglas() {
+            let totalFacturado = 0;
+            let totalReintegroCalculado = 0;
+
+            const filas = document.querySelectorAll('.factura-row');
+            filas.forEach(row => {
+                const montoVal = parseFloat(row.querySelector('.monto-input').value) || 0;
+                const especialidadVal = row.querySelector('.especialidad-select').value;
+                const descuento = descuentoPorEspecialidad[especialidadVal] || 0;
+
+                totalFacturado += montoVal;
+
+                if (especialidadVal && !isNaN(montoVal)) {
+                    const descuentoFila = montoVal - descuento;
+                    totalReintegroCalculado += descuentoFila >= 0 ? descuentoFila : 0;
+                }
+            });
+
+            // Actualizar display de pesos acumulados
+            totalAcumuladoDisplay.textContent = `$ ${totalFacturado.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            montoReintegrarInput.value = totalReintegroCalculado.toFixed(2);
+
+            // Regla de negocio: Si el acumulado supera los $130.000, el CBU es obligatorio
+            const cbuLabel = document.querySelector('label[for="cbu"]');
+            if (totalFacturado > 130000) {
+                cbuInput.required = true;
+                cbuLabel.innerHTML = 'CBU del Afiliado <span class="text-red-500 font-bold">* (Obligatorio por superar $130.000 acumulado)</span>';
+            } else {
+                cbuInput.required = false;
+                cbuLabel.innerHTML = 'CBU del Afiliado (Opcional)';
+            }
+
+            actualizarCbuState();
+        }
+
+        // Agregar fila al dar click en el botón más
+        btnAddFactura.addEventListener('click', () => {
+            facturasContainer.appendChild(crearFilaFactura());
+            actualizarContadorBadge();
+            calcularTotalesYReglas();
+        });
+
+        // Inicializar primer fila
+        facturasContainer.appendChild(crearFilaFactura());
+        actualizarContadorBadge();
+
+        function formatAfiliadoValue(value) {
+            const digits = value.replace(/\D/g, '');
+            if (digits.length <= 2) {
+                return digits;
+            }
+            return digits.slice(0, -2) + '/' + digits.slice(-2);
+        }
+
+        function updateAfiliadoInput(event) {
+            const originalValue = event.target.value;
+            const cursorPosition = event.target.selectionStart;
+            const digitsBeforeCursor = originalValue.slice(0, cursorPosition).replace(/\D/g, '').length;
+            const formatted = formatAfiliadoValue(originalValue);
+
+            event.target.value = formatted;
+
+            let newCursor = digitsBeforeCursor;
+            if (digitsBeforeCursor > 2) {
+                newCursor += 1; // Ajustar por la diagonal insertada
+            }
+            newCursor = Math.min(newCursor, formatted.length);
+            event.target.setSelectionRange(newCursor, newCursor);
+        }
+
+        afiliadoInput.addEventListener('input', updateAfiliadoInput);
+        afiliadoInput.addEventListener('blur', function (event) {
+            event.target.value = formatAfiliadoValue(event.target.value);
+        });
+
+        function evaluarRequerimientosContacto() {
+            const cbuValue = cbuInput.value.replace(/\D/g, ''); // Limpiar a solo dígitos
+
+            // Si tiene CBU cargado, teléfono y email se vuelven requeridos de forma obligatoria
+            if (cbuValue.length > 0) {
+                telefonoInput.required = true;
+                emailInput.required = true;
+                
+                // Mostrar asterisco de obligatoriedad visualmente
+                document.getElementById('telefono-label').innerHTML = 'Número de Teléfono <span class="text-red-500 font-bold">*</span>';
+                document.getElementById('email-label').innerHTML = 'Email de Contacto <span class="text-red-500 font-bold">*</span>';
+                
+                telefonoInput.classList.add('border-emerald-500', 'bg-emerald-50/10');
+                emailInput.classList.add('border-emerald-500', 'bg-emerald-50/10');
+            } else {
+                telefonoInput.required = false;
+                emailInput.required = false;
+                
+                // Remover advertencias visuales de obligatoriedad
+                document.getElementById('telefono-label').innerHTML = 'Número de Teléfono';
+                document.getElementById('email-label').innerHTML = 'Email de Contacto';
+                
+                telefonoInput.classList.remove('border-emerald-500', 'bg-emerald-50/10');
+                emailInput.classList.remove('border-emerald-500', 'bg-emerald-50/10');
+            }
+        }
+
+        function actualizarCbuState() {
+            const cbuValue = cbuInput.value.replace(/\D/g, ''); 
+            cbuInput.value = cbuValue; 
+            
+            cbuCounter.textContent = `${cbuValue.length} / 22 dígitos`;
+            
+            // Limpiar clases de estados previos para evitar conflictos de bordes
+            cbuInput.classList.remove('border-emerald-600', 'border-red-400', 'border-amber-500');
+            
+            if (cbuValue.length === 22) {
+                cbuCounter.className = "text-xs font-mono font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded";
+                cbuInput.classList.add('border-emerald-600');
+            } else if (cbuValue.length > 0) {
+                cbuCounter.className = "text-xs font-mono font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded";
+                cbuInput.classList.add('border-red-400');
+            } else {
+                cbuCounter.className = "text-xs font-mono font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded";
+                if (cbuInput.required) {
+                    cbuInput.classList.add('border-amber-500');
+                }
+            }
+
+            evaluarRequerimientosContacto();
+        }
+
+        cbuInput.addEventListener('input', actualizarCbuState);
+        cbuInput.addEventListener('change', actualizarCbuState);
+
+        document.getElementById('archivo').addEventListener('change', function (e) {
+            const files = Array.from(e.target.files || []);
+            const fileNameDisplay = document.getElementById('fileName');
+
+            if (files.length === 0) {
+                fileNameDisplay.style.display = 'none';
+                fileNameDisplay.textContent = '';
+                return;
+            }
+
+            const validFiles = [];
+            const errors = [];
+
+            files.forEach(file => {
+                if (file.size > 5 * 1024 * 1024) {
+                    errors.push(`❌ ${file.name} supera los 5MB de límite.`);
+                } else {
+                    validFiles.push(file);
+                }
+            });
+
+            let html = '';
+            if (validFiles.length) {
+                html += '<div class="font-bold text-emerald-800 flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Archivos válidos listos:</div><ul class="mt-1.5 space-y-1 pl-5">';
+                validFiles.forEach(f => {
+                    html += `<li class="list-disc text-emerald-950 font-medium">${f.name} (${(f.size / 1024 / 1024).toFixed(2)} MB)</li>`;
+                });
+                html += '</ul>';
+            }
+            if (errors.length) {
+                html += '<div class="mt-2 text-red-600 font-semibold">' + errors.join('<br>') + '</div>';
+            }
+
+            if (validFiles.length) {
+                fileNameDisplay.innerHTML = html;
+                fileNameDisplay.className = "mt-3 p-3 rounded-lg text-sm block border border-emerald-200 bg-emerald-50/50";
+            } else {
+                fileNameDisplay.innerHTML = html || '❌ Ningún archivo válido seleccionado para cargar.';
+                fileNameDisplay.className = "mt-3 p-3 rounded-lg text-sm block border border-red-200 bg-red-50 text-red-700";
+                e.target.value = '';
+            }
+        });
+
+        document.getElementById('reintegroForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const cbuValue = cbuInput.value.replace(/\D/g, '');
+            if (cbuValue.length > 0 && cbuValue.length !== 22) {
+                showToast("El CBU debe contener exactamente 22 números.", "error");
+                cbuInput.focus();
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btn-text');
+            const loader = document.getElementById('loader');
+
+            submitBtn.disabled = true;
+            btnText.classList.add('hidden');
+            loader.classList.remove('hidden');
+
+            const fileInput = document.getElementById('archivo');
+            const files = Array.from(fileInput.files || []);
+
+            try {
+                if (files.length === 0) throw new Error('Debe adjuntar al menos un comprobante válido.');
+
+                const validFiles = files.filter(f => f.size <= 5 * 1024 * 1024);
+                if (validFiles.length === 0) throw new Error('Ningún archivo cumple con el tamaño permitido.');
+
+                const base64Array = await Promise.all(validFiles.map(f => getBase64(f).then(s => s.split(',')[1])));
+
+                // Obtener todas las filas de facturas activas cargadas
+                const filasFacturas = document.querySelectorAll('.factura-row');
+                
+                // Preparar las peticiones individuales (una fila por factura en sheets)
+                const sendPromises = Array.from(filasFacturas).map(async (row) => {
+                    const especialidadVal = row.querySelector('.especialidad-select').value;
+                    const facturaVal = row.querySelector('.factura-input').value;
+                    const montoVal = row.querySelector('.monto-input').value;
+
+                    // Calcular reintegro independiente por especialidad médica
+                    const descuento = descuentoPorEspecialidad[especialidadVal] || 0;
+                    const reintegro = parseFloat(montoVal) - descuento;
+                    const montoReintegrarFila = reintegro >= 0 ? reintegro.toFixed(2) : '0.00';
+
+                    const formData = {
+                        afiliado: afiliadoInput.value,
+                        delegacion: delegacionSelect.value,
+                        nombre: nombreInput.value,
+                        email: emailInput.value,
+                        telefono: telefonoInput.value,
+                        cbu: cbuInput.value,
+                        especialidad: especialidadVal,
+                        factura: facturaVal,
+                        monto: montoVal,
+                        montoReintegrar: montoReintegrarFila,
+                        estado: document.getElementById('estado').value,
+                        fileNames: validFiles.map(f => f.name),
+                        mimeTypes: validFiles.map(f => f.type),
+                        fileBase64: base64Array
+                    };
+
+                    // Enviar datos de forma individual a la WebApp de Google
+                    return fetch(URL_WEBAPP_GOOGLE, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'text/plain;charset=utf-8'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                });
+
+                // Esperar a que todos los registros individuales se hayan procesado con éxito
+                await Promise.all(sendPromises);
+
+                // Cambiar estado a Éxito
+                document.getElementById('reintegroForm').classList.add('hidden');
+                document.getElementById('successMessage').classList.remove('hidden');
+                document.getElementById('errorMessage').classList.add('hidden');
+
+            } catch (error) {
+                console.error('Error al procesar el envío:', error);
+                document.getElementById('reintegroForm').classList.add('hidden');
+                document.getElementById('errorMessage').classList.remove('hidden');
+            } finally {
+                submitBtn.disabled = false;
+                btnText.classList.remove('hidden');
+                loader.classList.add('hidden');
+            }
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', function () {
+            document.getElementById('reintegroForm').reset();
+            document.getElementById('reintegroForm').classList.remove('hidden');
+            document.getElementById('successMessage').classList.add('hidden');
+            document.getElementById('fileName').classList.add('hidden');
+            
+            // Dejar una sola fila vacía de factura al reiniciar la carga
+            facturasContainer.innerHTML = '';
+            facturasContainer.appendChild(crearFilaFactura());
+            actualizarContadorBadge();
+            
+            calcularTotalesYReglas(); // Limpiar requerimiento por monto en CBU
+            actualizarCbuState();
+        });
+
+        document.getElementById('resetErrorBtn').addEventListener('click', function () {
+            document.getElementById('reintegroForm').classList.remove('hidden');
+            document.getElementById('errorMessage').classList.add('hidden');
+        });
+
+        function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // Notificaciones Toast integradas
+        function showToast(message, type = "success") {
+            const toastMessage = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+            
+            toastMessage.textContent = message;
+            if (type === "success") {
+                toast.className = "fixed top-5 right-5 z-50 transform transition-transform duration-300 ease-in-out bg-emerald-900 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center space-x-3 max-w-md border border-emerald-700";
+                toastIcon.innerHTML = "✓";
+            } else {
+                toast.className = "fixed top-5 right-5 z-50 transform transition-transform duration-300 ease-in-out bg-red-950 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center space-x-3 max-w-md border border-red-700";
+                toastIcon.innerHTML = "⚠";
+            }
+            
+            // Animación para mostrar
+            toast.classList.remove('translate-x-full');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+            }, 3500);
+        }
+    </script>
+
+    <!-- Toast dinámico para mensajes de interfaz -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-x-full transition-transform duration-300 ease-in-out bg-gray-900 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center space-x-3 max-w-md">
+        <span id="toast-icon" class="font-extrabold text-lg"></span>
+        <p id="toast-message" class="text-sm font-medium"></p>
+    </div>
+
+</body>
+
+</html>
